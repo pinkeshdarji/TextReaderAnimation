@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'reader_animation.dart';
 
 GlobalKey _keyT1 = GlobalKey();

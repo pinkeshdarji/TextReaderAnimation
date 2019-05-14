@@ -1,6 +1,8 @@
 # text_reading_animation
 
-A new Flutter application.
+This animation is inspired from Google IO19 RNN process and can be used as Text Reader.
+
+<img src="./preview/preview.gif" height="600" alt="Screenshot"/>
 
 ## Getting Started
 
