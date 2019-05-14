@@ -32,12 +32,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
     WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
 
-    animationController1 = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 1000));
-    animationController2 = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 1000));
-    animationController3 = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 1000));
+    animationController1 =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    animationController2 =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    animationController3 =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
 
     animation1 = Tween(begin: 0.0, end: 0.5).animate(CurvedAnimation(
       parent: animationController1,
@@ -61,16 +61,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   void handler1(status) {
     if (status == AnimationStatus.forward) {
       setState(() {
-        Future.delayed(Duration(milliseconds: 100), () {
-          _text1Visiblity = true;
-          _aniWidth = 35.0;
-          _alignm1 = AlignmentDirectional.centerEnd;
-        });
+        _text1Visiblity = true;
+        _aniWidth = _text1Width * 0.3;
+        _alignm1 = AlignmentDirectional.centerEnd;
       });
     } else if (status == AnimationStatus.completed) {
       setState(() {
         _text1Visiblity = false;
-        _aniWidth = 3.0;
+        _aniWidth = _text2Width * 0.3;
         animationController1.reset();
         animationController2.forward();
       });
@@ -80,11 +78,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   void handler2(status) {
     if (status == AnimationStatus.forward) {
       setState(() {
-        Future.delayed(Duration(milliseconds: 100), () {
-          _text2Visiblity = true;
-          _aniWidth = 35.0;
-          _alignm1 = AlignmentDirectional.centerEnd;
-        });
+        _text2Visiblity = true;
+        _aniWidth = _text3Width * 0.3;
+        _alignm1 = AlignmentDirectional.centerEnd;
       });
     } else if (status == AnimationStatus.completed) {
       setState(() {
@@ -99,11 +95,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   void handler3(status) {
     if (status == AnimationStatus.forward) {
       setState(() {
-        Future.delayed(Duration(milliseconds: 100), () {
-          _text3Visiblity = true;
-          _aniWidth = 35.0;
-          _alignm1 = AlignmentDirectional.centerEnd;
-        });
+        _text3Visiblity = true;
+        _aniWidth = 35.0;
+        _alignm1 = AlignmentDirectional.centerEnd;
       });
     } else if (status == AnimationStatus.completed) {
       setState(() {
@@ -183,7 +177,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                         1.0
                                       ],
                                           colors: [
-                                        Colors.grey[400],
+                                        Colors.blueAccent[100],
                                         Colors.white70
                                       ])),
                                   width: _aniWidth,
@@ -192,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                 Container(
                                   width: 3,
                                   height: 50.0,
-                                  color: Colors.grey,
+                                  color: Colors.grey[400],
                                 ),
                               ],
                             ),
@@ -235,7 +229,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                         1.0
                                       ],
                                           colors: [
-                                        Colors.grey[400],
+                                        Colors.blueAccent[100],
                                         Colors.white70
                                       ])),
                                   width: _aniWidth,
@@ -244,7 +238,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                 Container(
                                   width: 3,
                                   height: 50.0,
-                                  color: Colors.grey,
+                                  color: Colors.grey[400],
                                 ),
                               ],
                             ),
@@ -287,7 +281,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                         1.0
                                       ],
                                           colors: [
-                                        Colors.grey[400],
+                                        Colors.blueAccent[100],
                                         Colors.white70
                                       ])),
                                   width: _aniWidth,
@@ -296,7 +290,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                 Container(
                                   width: 3,
                                   height: 50.0,
-                                  color: Colors.grey,
+                                  color: Colors.grey[400],
                                 ),
                               ],
                             ),
