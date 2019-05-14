@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-//creating Key for red panel
+import 'reader_animation.dart';
+
 GlobalKey _keyT1 = GlobalKey();
 GlobalKey _keyT2 = GlobalKey();
 GlobalKey _keyT3 = GlobalKey();
@@ -58,6 +59,18 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       ..addStatusListener(handler3);
   }
 
+  _afterLayout(_) {
+    _getSizes();
+  }
+
+  _getSizes() {
+    _text1Width = _keyT1.currentContext.size.width;
+    _text2Width = _keyT2.currentContext.size.width;
+    _text3Width = _keyT3.currentContext.size.width;
+    print("width of Red: $_text1Width $_text2Width $_text3Width");
+    animationController1.forward();
+  }
+
   void handler1(status) {
     if (status == AnimationStatus.forward) {
       setState(() {
@@ -68,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     } else if (status == AnimationStatus.completed) {
       setState(() {
         _text1Visiblity = false;
-        _aniWidth = _text2Width * 0.3;
+        _aniWidth = 3.0;
         animationController1.reset();
         animationController2.forward();
       });
@@ -109,18 +122,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     }
   }
 
-  _afterLayout(_) {
-    _getSizes();
-  }
-
-  _getSizes() {
-    _text1Width = _keyT1.currentContext.size.width;
-    _text2Width = _keyT2.currentContext.size.width;
-    _text3Width = _keyT3.currentContext.size.width;
-    print("width of Red: $_text1Width $_text2Width $_text3Width");
-    animationController1.forward();
-  }
-
   @override
   void dispose() {
     animationController1.dispose();
@@ -129,8 +130,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    //final double width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -144,161 +143,35 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         margin: EdgeInsets.all(16.0),
         child: Row(
           children: <Widget>[
-            Stack(
-              key: _keyT1,
-              alignment: AlignmentDirectional.topStart,
-              children: <Widget>[
-                Container(
-                    padding: EdgeInsets.symmetric(horizontal: 3.0),
-                    child: Text(
-                      'Textttttttttttttt',
-                      style: TextStyle(fontSize: 22),
-                    )),
-                AnimatedBuilder(
-                    animation: animationController1,
-                    builder: (BuildContext context, Widget child) {
-                      return Positioned(
-                        left: animation1.value * _text1Width,
-                        child: Visibility(
-                          visible: _text1Visiblity,
-                          child: Container(
-                            width: _text1Width * 0.5,
-                            child: Stack(
-                              alignment: _alignm1,
-                              children: <Widget>[
-                                AnimatedContainer(
-                                  duration: Duration(milliseconds: 100),
-                                  decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                          begin: AlignmentDirectional.centerEnd,
-                                          end: AlignmentDirectional.centerStart,
-                                          stops: [
-                                        0.1,
-                                        1.0
-                                      ],
-                                          colors: [
-                                        Colors.blueAccent[100],
-                                        Colors.white70
-                                      ])),
-                                  width: _aniWidth,
-                                  height: 50,
-                                ),
-                                Container(
-                                  width: 3,
-                                  height: 50.0,
-                                  color: Colors.grey[400],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-              ],
+            ReaderAnimation(
+              globalKey: _keyT1,
+              animationController: animationController1,
+              animation: animation1,
+              alignmentDirectional: _alignm1,
+              aniWidth: _aniWidth,
+              textString: "Text",
+              textVisibilty: _text1Visiblity,
+              textWidth: _text1Width,
             ),
-            Stack(
-              key: _keyT2,
-              alignment: AlignmentDirectional.topStart,
-              children: <Widget>[
-                Container(
-                    padding: EdgeInsets.symmetric(horizontal: 3.0),
-                    child: Text(
-                      'Reader',
-                      style: TextStyle(fontSize: 22),
-                    )),
-                AnimatedBuilder(
-                    animation: animationController2,
-                    builder: (BuildContext context, Widget child) {
-                      return Positioned(
-                        left: animation2.value * _text2Width,
-                        child: Visibility(
-                          visible: _text2Visiblity,
-                          child: Container(
-                            width: _text2Width * 0.5,
-                            child: Stack(
-                              alignment: _alignm1,
-                              children: <Widget>[
-                                AnimatedContainer(
-                                  duration: Duration(milliseconds: 100),
-                                  decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                          begin: AlignmentDirectional.centerEnd,
-                                          end: AlignmentDirectional.centerStart,
-                                          stops: [
-                                        0.1,
-                                        1.0
-                                      ],
-                                          colors: [
-                                        Colors.blueAccent[100],
-                                        Colors.white70
-                                      ])),
-                                  width: _aniWidth,
-                                  height: 50,
-                                ),
-                                Container(
-                                  width: 3,
-                                  height: 50.0,
-                                  color: Colors.grey[400],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-              ],
+            ReaderAnimation(
+              globalKey: _keyT2,
+              animationController: animationController2,
+              animation: animation2,
+              alignmentDirectional: _alignm1,
+              aniWidth: _aniWidth,
+              textString: "Reader",
+              textVisibilty: _text2Visiblity,
+              textWidth: _text2Width,
             ),
-            Stack(
-              key: _keyT3,
-              alignment: AlignmentDirectional.topStart,
-              children: <Widget>[
-                Container(
-                    padding: EdgeInsets.symmetric(horizontal: 3.0),
-                    child: Text(
-                      'Animation',
-                      style: TextStyle(fontSize: 22),
-                    )),
-                AnimatedBuilder(
-                    animation: animationController3,
-                    builder: (BuildContext context, Widget child) {
-                      return Positioned(
-                        left: animation3.value * _text3Width,
-                        child: Visibility(
-                          visible: _text3Visiblity,
-                          child: Container(
-                            width: _text3Width * 0.5,
-                            child: Stack(
-                              alignment: _alignm1,
-                              children: <Widget>[
-                                AnimatedContainer(
-                                  duration: Duration(milliseconds: 100),
-                                  decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                          begin: AlignmentDirectional.centerEnd,
-                                          end: AlignmentDirectional.centerStart,
-                                          stops: [
-                                        0.1,
-                                        1.0
-                                      ],
-                                          colors: [
-                                        Colors.blueAccent[100],
-                                        Colors.white70
-                                      ])),
-                                  width: _aniWidth,
-                                  height: 50,
-                                ),
-                                Container(
-                                  width: 3,
-                                  height: 50.0,
-                                  color: Colors.grey[400],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-              ],
+            ReaderAnimation(
+              globalKey: _keyT3,
+              animationController: animationController3,
+              animation: animation3,
+              alignmentDirectional: _alignm1,
+              aniWidth: _aniWidth,
+              textString: "Animation",
+              textVisibilty: _text3Visiblity,
+              textWidth: _text3Width,
             ),
           ],
         ),
