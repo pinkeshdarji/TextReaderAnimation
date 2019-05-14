@@ -7,45 +7,36 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   Animation<double> animation;
-  Animation<double> widthAnimation;
   AnimationController animationController;
-  AlignmentDirectional _defaultPlace = AlignmentDirectional.topStart;
+  double _aniWidth = 8.0;
+  AlignmentDirectional _alignm1 = AlignmentDirectional.centerStart;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     animationController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 300));
+        vsync: this, duration: Duration(milliseconds: 1000));
 
-    animation = Tween(begin: -0.5, end: 0.0).animate(CurvedAnimation(
+    animation = Tween(begin: 0.0, end: 0.9).animate(CurvedAnimation(
       parent: animationController,
-      curve: Curves.elasticIn,
+      curve: Curves.fastOutSlowIn,
     ))
       ..addStatusListener(handler);
-
-    widthAnimation = Tween(begin: 8.0, end: 100.0).animate(animationController)
-      //..addStatusListener(handler);
   }
 
   void handler(status) {
-    if (status == AnimationStatus.completed) {
-      animation.removeStatusListener(handler);
-      widthAnimation.removeStatusListener(handler);
-      animationController.reset();
-      animation = Tween(begin: 0.0, end: 0.5).animate(CurvedAnimation(
-        parent: animationController,
-        curve: Curves.easeOut,
-      ))
-        ..addStatusListener((status) {
-          if (status == AnimationStatus.completed) {}
+    if (status == AnimationStatus.forward) {
+      setState(() {
+        Future.delayed(Duration(milliseconds: 200), () {
+          _aniWidth = 35.0;
+          _alignm1 = AlignmentDirectional.centerEnd;
         });
-
-      widthAnimation = Tween(begin: 100.0, end: 8.0).animate(animationController)
-
-
-      animationController.forward();
+      });
+    } else if (status == AnimationStatus.completed) {
+      setState(() {
+        _aniWidth = 8.0;
+      });
     }
   }
 
@@ -62,26 +53,51 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
     return Scaffold(
       body: Stack(
+        alignment: AlignmentDirectional.centerStart,
         children: <Widget>[
-          Container(
-            color: Colors.grey,
-            height: 100,
+          Center(
+            child: Container(
+              height: 50,
+              width: MediaQuery.of(context).size.width,
+              child: Center(
+                child: Text(
+                  'Text',
+                  style: TextStyle(fontSize: 40),
+                ),
+              ),
+            ),
           ),
           AnimatedBuilder(
               animation: animationController,
               builder: (BuildContext context, Widget child) {
-                print(animation.value);
-                return Transform(
-                  transform: Matrix4.translationValues(
-                      animation.value * width, 0.0, 0.0),
-                  child: new Center(
-                      child: Container(
-                    width: widthAnimation.value,
-                    height: 100.0,
-                    color: Colors.red,
-                  )),
+                return Positioned(
+                  left: animation.value * width,
+                  child: Container(
+                    width: 35,
+                    child: Stack(
+                      alignment: _alignm1,
+                      children: <Widget>[
+                        AnimatedContainer(
+                          duration: Duration(milliseconds: 200),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: AlignmentDirectional.centerEnd,
+                                  end: AlignmentDirectional.centerStart,
+                                  stops: [0.1, 1.0],
+                                  colors: [Colors.grey[400], Colors.white70])),
+                          width: _aniWidth,
+                          height: 50,
+                        ),
+                        Container(
+                          width: 8,
+                          height: 50.0,
+                          color: Colors.grey,
+                        ),
+                      ],
+                    ),
+                  ),
                 );
-              })
+              }),
         ],
       ),
     );
